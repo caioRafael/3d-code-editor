@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import { Resizable } from './components/ui/Resizable'
 import { Versions } from './components/Versions'
 import { Star } from 'lucide-react'
+import { AppEditor } from './components/feature/editor/AppEditor'
 
 function App(): ReactElement {
   return (
@@ -16,10 +17,8 @@ function App(): ReactElement {
               <p className="text-text">Sidebar</p>
             </div>
           </Resizable>
-          <div className="flex-1">
-            <p className="text-text">Editor</p>
-          </div>
-          <Resizable direction="horizontal" initialWidth={300} minWidth={200} maxWidth={480}>
+          <AppEditor />
+          <Resizable direction="horizontal" initialWidth={300} minWidth={200}>
             <div className="h-full flex flex-col items-center justify-center">
               <p className="text-text">Preview</p>
               <Star className="w-10 h-10 text-text animate-pulse" />
