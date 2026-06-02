@@ -1,7 +1,13 @@
 export const DEFAULT_CODE = `
-    console.log('Hello, world!');
+const { cuboid, sphere } = require('@jscad/modeling').primitives
+const { subtract } = require('@jscad/modeling').booleans
 
-    const name = '<3Dev>'
+function main() {
+  return subtract(
+    cuboid({ size: [20, 20, 20] }),
+    sphere({ radius: 13 })
+  )
+}
 
-    console.log(\`Hello, \${name}!\`);
+module.exports = { main }
 `
