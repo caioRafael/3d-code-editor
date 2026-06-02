@@ -14,21 +14,26 @@ function isGeom3(value: unknown): value is Geom3 {
 }
 
 export function runEditorCode(code: string): Geom3 {
+  // require simulado: só permite importar o @jscad/modeling
   const require = (name: string): unknown => {
     if (name === '@jscad/modeling') return jscadModeling
     throw new Error(`Module not found: ${name}`)
   }
 
+  // objeto module que o código do editor irá preencher via module.exports
   const module = { exports: {} as { main?: () => unknown } }
 
+  // cria uma função a partir do código do editor e a executa injetando require/module/exports
   const factory = new Function('require', 'module', 'exports', code)
   factory(require, module, module.exports)
 
+  // valida que o código exportou uma função main
   const main = module.exports.main
   if (typeof main !== 'function') {
     throw new Error('O código precisa exportar uma função main(): module.exports = { main }')
   }
 
+  // executa main e valida que o retorno é uma geometria geom3 válida
   const result = main()
   if (!isGeom3(result)) {
     throw new Error('main() precisa retornar uma geometria 3D (geom3) do @jscad/modeling')
@@ -38,10 +43,12 @@ export function runEditorCode(code: string): Geom3 {
 }
 
 export function geom3ToBufferGeometry(geom: Geom3): BufferGeometry {
+  // acumula as posições (x, y, z) de todos os vértices dos triângulos
   const positions: number[] = []
 
   for (const polygon of geom.polygons) {
     const vertices = polygon.vertices
+    // triangula o polígono em leque (fan): fixa o primeiro vértice e percorre os demais
     for (let i = 2; i < vertices.length; i++) {
       const a = vertices[0]
       const b = vertices[i - 1]
@@ -50,8 +57,10 @@ export function geom3ToBufferGeometry(geom: Geom3): BufferGeometry {
     }
   }
 
+  // monta a BufferGeometry do three.js com 3 componentes por vértice
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
+  // calcula as normais para iluminação correta
   geometry.computeVertexNormals()
 
   return geometry

@@ -11,11 +11,14 @@ export function AppPreview(): ReactElement {
   const { geometry, error } = useMemo(() => {
     try {
       const geom = runEditorCode(code)
+      // console.log('geom: ', geom)
       return { geometry: geom3ToBufferGeometry(geom), error: null }
     } catch (err) {
       return { geometry: null, error: err instanceof Error ? err.message : String(err) }
     }
   }, [code])
+
+  console.log('geometry: ', geometry)
 
   return (
     <div className="h-full w-full flex flex-col">
