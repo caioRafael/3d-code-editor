@@ -17,7 +17,8 @@ if (process.contextIsolated) {
         ipcRenderer.invoke('workspace:tree', workspacePath),
       readFile: (filePath: string) => ipcRenderer.invoke('file:read', filePath),
       saveFile: (filePath: string, content: string) =>
-        ipcRenderer.invoke('file:save', filePath, content)
+        ipcRenderer.invoke('file:save', filePath, content),
+      createWorkspace: (projectName: string) => ipcRenderer.invoke('workspace:create', projectName)
     })
   } catch (error) {
     console.error(error)

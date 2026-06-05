@@ -10,6 +10,9 @@ declare global {
       readFile: (filePath: string) => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<boolean>
       getWorkspaceTree: (workspacePath: string) => Promise<FileNode>
+      createWorkspace: (
+        projectName: string
+      ) => Promise<{ selectedFolder: string; projectPath: string } | null>
     }
   }
 }
