@@ -17,7 +17,7 @@ self.MonacoEnvironment = {
 loader.config({ monaco })
 
 export function AppEditor(): ReactElement {
-  const { code, setCode } = useEditorStore()
+  const { code, setCode, file } = useEditorStore()
   return (
     <div className="flex-1 min-w-0 overflow-hidden bg-primary flex flex-col">
       <div className="w-full p-2">
@@ -29,7 +29,7 @@ export function AppEditor(): ReactElement {
           theme="dracula"
           height="100%"
           defaultLanguage="javascript"
-          defaultValue={code}
+          value={file ?? code}
           options={{ automaticLayout: true }}
           onChange={(value) => setCode(value ?? '')}
         />
