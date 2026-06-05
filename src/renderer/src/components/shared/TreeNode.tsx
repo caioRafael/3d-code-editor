@@ -8,12 +8,12 @@ interface TreeNodeProps {
 }
 
 export function TreeNode({ node }: TreeNodeProps): ReactElement {
-  const { setFile } = useEditorStore()
+  const { openFile } = useEditorStore()
   const [expanded, setExpanded] = useState(false)
 
   const handleClick = async (): Promise<void> => {
     const content = await window.electronAPI.readFile(node.path)
-    setFile(content)
+    openFile({ path: node.path, name: node.name, content })
   }
 
   if (node.type === 'file') {

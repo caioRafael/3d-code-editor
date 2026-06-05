@@ -8,7 +8,7 @@ import { EmptyState } from '@renderer/components/shared/EmptyState'
 import { FileNode } from '@renderer/interface/FileNode'
 
 export function EditorPage(): ReactElement {
-  const { file, workspace, setWorkspace } = useEditorStore()
+  const { activePath, workspace, setWorkspace } = useEditorStore()
 
   const handleOpenWorkspace = async (): Promise<void> => {
     const path = await window.electronAPI.openWorkspace()
@@ -23,10 +23,12 @@ export function EditorPage(): ReactElement {
       <Resizable direction="horizontal" initialWidth={300} minWidth={200}>
         <Sidebar tree={workspace} onOpenWorkspace={handleOpenWorkspace} />
       </Resizable>
-      {workspace && file ? <AppEditor /> : <EmptyState />}
-      <Resizable direction="horizontal" initialWidth={300} minWidth={200}>
-        <AppPreview />
-      </Resizable>
+      {workspace && activePath ? <AppEditor /> : <EmptyState />}
+      {workspace && activePath && (
+        <Resizable direction="horizontal" initialWidth={300} minWidth={200}>
+          <AppPreview />
+        </Resizable>
+      )}
     </main>
   )
 }
